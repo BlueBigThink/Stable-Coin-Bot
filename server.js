@@ -1,17 +1,16 @@
-require('dotenv-safe').config()
+require('dotenv-safe').config();
+require('./utils/global');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const apiRouter = require('./api/routes/index');
+const { test } = require('./engine/index');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// API calls
-app.use("/api", apiRouter);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('PRODUCTION')
@@ -25,3 +24,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+test();

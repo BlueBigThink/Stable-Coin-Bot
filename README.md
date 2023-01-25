@@ -1,4 +1,4 @@
-# Express + React base project
+# Uniswap Stable Coin Bot
 
 ## Usage
 
