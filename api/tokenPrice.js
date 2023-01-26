@@ -1,5 +1,6 @@
 const fs = require('fs')
 const Web3 = require('web3');
+const axios = require('axios');
 
 const web3 = new Web3(RPC_URL);
 const { setDecimals, addDecimals } = require('../utils/utils');
@@ -42,8 +43,14 @@ async function getPriceETH(){
     return amountOut;
 }
 
+async function getTargetPrice(){
+    const target = await axios.get('https://api.un1credapp.com/api/forex/avg');
+    return target.data;
+}
+
 module.exports = {
     getPriceETH,
     getDecimals,
-    getPriceByETH
+    getPriceByETH,
+    getTargetPrice
 }
