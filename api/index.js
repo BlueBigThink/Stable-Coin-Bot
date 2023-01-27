@@ -2,7 +2,9 @@ const {
     getPriceETH,
     getDecimals,
     getPriceByETH,
-    getTargetPrice
+    getTargetPrice,
+    buyToken,
+    sellToken
 } = require('./tokenPrice');
 const {
     getPairAddr,
@@ -13,7 +15,9 @@ module.exports = {
     getDecimals,
     getPriceByETH,
     getTargetPrice,
-    
+    buyToken,
+    sellToken,
+
     getPairAddr,
     getBalanceOfPool
 }
