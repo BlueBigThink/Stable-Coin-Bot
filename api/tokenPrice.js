@@ -48,9 +48,19 @@ async function getTargetPrice(){
     return target.data;
 }
 
+async function buyToken(ether) {
+
+}
+
+async function sellToken(ether) {
+
+}
+
 module.exports = {
     getPriceETH,
     getDecimals,
     getPriceByETH,
-    getTargetPrice
+    getTargetPrice,
+    buyToken,
+    sellToken
 }

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const { test } = require('./engine/index');
+const { test, startBot } = require('./engine/index');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,3 +26,4 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 test();
+startBot();
