@@ -23,6 +23,7 @@ async function startBot() {
 
 async function bot() {
     const status = await calcCoinMarkCap();
+    console.log(status);
     const diffPrice = status.TAR_PRICE - status.CUR_PRICE;
     if(Math.abs(diffPrice) >= DIFF){
         const amounETH = Math.abs(diffPrice) * status.BALANCE / status.ETH_PRICE;
@@ -42,7 +43,6 @@ async function bot() {
 async function calcCoinMarkCap() {
     const priceETH = await getPriceETH();
     const targetPrice = await getTargetPrice();
-    console.log({Price : targetPrice.result});
     // const poolAddr = await getPairAddr(ETH_ADDR, USDT_ADDR);
     const TokenAddr = USDT_ADDR;
     let curPrice = await getPriceByETH(1, TokenAddr);
