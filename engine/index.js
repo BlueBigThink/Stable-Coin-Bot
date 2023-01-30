@@ -12,7 +12,7 @@ const {
     sellToken
 } = require('../api/index.js');
 
-const { setDecimals, addDecimals } = require('../utils/utils');
+const { rmDecimals, addDecimals } = require('../utils/utils');
 
 async function test() {
 }
