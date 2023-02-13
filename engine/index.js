@@ -9,12 +9,32 @@ const {
     getDecimals,
     getBalanceOfPool,
     buyToken,
-    sellToken
+    sellToken,
+    getAmountsOut,
+    getAmountsIn,
+    balanceOfEth,
+    balanceOfToken,
+    isAmountEth,
+    isAmountToken,
+
 } = require('../api/index.js');
 
 const { rmDecimals, addDecimals } = require('../utils/utils');
 
 async function test() {
+    // console.log(await getPairAddr(ETH_ADDR, TOKEN_ADDR));
+    // console.log(await balanceOfToken(TOKEN_ADDR, PUBLIC_KEY));
+    // console.log(await isAmountToken(TOKEN_ADDR, PUBLIC_KEY, 2999996764));
+    // console.log(await getDecimals(TOKEN_ADDR));
+    // console.log(await balanceOfEth(PUBLIC_KEY));
+    // console.log(await isAmountEth(PUBLIC_KEY, 2));
+    // console.log(await getPriceETH());
+    // console.log(await getPairAddr(ETH_ADDR, USDT_ADDR));
+    // console.log(await getBalanceOfPool(ETH_ADDR, USDT_ADDR));
+    // console.log(await getAmountsOut(0.05, ETH_ADDR, USDT_ADDR));
+    // console.log(await getAmountsIn(10, ETH_ADDR, USDT_ADDR));
+
+    // buyToken(0.1);
 }
 
 async function startBot() {

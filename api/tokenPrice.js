@@ -33,9 +33,9 @@ async function getPriceETH(){
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
         amountOut = await router.methods.getAmountsOut(ethToSell, [ETH_ADDR ,USDT_ADDR]).call();
-        // const dec = await getDecimals(USDT_ADDR);
+        const dec = await getDecimals(USDT_ADDR);
         amountOut =  amountOut[1];
-        amountOut = addDecimals(amountOut, 6);
+        amountOut = addDecimals(amountOut, dec);
     } catch (error) {}
 
 

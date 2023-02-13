@@ -3,6 +3,8 @@ const Web3 = require('web3');
 
 const web3 = new Web3(RPC_URL);
 const { rmDecimals, addDecimals } = require('../utils/utils');
+const { getDecimals } = require('./tokenPrice');
+
 let uniswapABI = JSON.parse(fs.readFileSync('abi/uniswapV2.json','utf-8'));
 let uniswapFactABI = JSON.parse(fs.readFileSync('abi/uniswapV2Fact.json','utf-8'));
 let uniswapPairABI = JSON.parse(fs.readFileSync('abi/uniswapV2Pair.json','utf-8'));
@@ -42,13 +44,16 @@ async function getAmountsOut(amountIn, addrIn, addrOut) {
     const outDecimal = await getDecimals(addrOut);
     const inDecimal = await getDecimals(addrIn);
     amountIn = rmDecimals(amountIn, inDecimal);
+    // amountIn = web3.utils.toWei(amountIn.toString(), "ether");
     let amountOut;
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
         amountOut = await router.methods.getAmountsOut(amountIn, [addrIn, addrOut]).call();
+        console.log(amountOut);
         amountOut = addDecimals(amountOut[1], outDecimal);
-    } catch (error) {}
-    
+    } catch (error) {
+        console.log(error);
+    }
     if(!amountOut) return 0;
     return amountOut;
 }
@@ -57,11 +62,12 @@ async function getAmountsIn(amountOut, addrIn, addrOut) {
     const outDecimal = await getDecimals(addrOut);
     const inDecimal = await getDecimals(addrIn);
     amountOut = rmDecimals(amountOut, outDecimal);
+    console.log(amountOut);
     let amountIn;
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
-        amountIn = await router.methods.getAmountsOut(amountOut, [addrIn, addrOut]).call();
-        amountIn = addDecimals(amountIn[1], inDecimal);
+        amountIn = await router.methods.getAmountsIn(amountOut, [addrIn, addrOut]).call();
+        amountIn = addDecimals(amountIn[0], inDecimal);
     } catch (error) {}
     
     if(!amountIn) return 0;
