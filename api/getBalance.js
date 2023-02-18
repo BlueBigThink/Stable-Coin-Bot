@@ -49,7 +49,6 @@ async function getAmountsOut(amountIn, addrIn, addrOut) {
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
         amountOut = await router.methods.getAmountsOut(amountIn, [addrIn, addrOut]).call();
-        console.log(amountOut);
         amountOut = addDecimals(amountOut[1], outDecimal);
     } catch (error) {
         console.log(error);
@@ -62,11 +61,10 @@ async function getAmountsIn(amountOut, addrIn, addrOut) {
     const outDecimal = await getDecimals(addrOut);
     const inDecimal = await getDecimals(addrIn);
     amountOut = rmDecimals(amountOut, outDecimal);
-    console.log(amountOut);
     let amountIn;
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
-        amountIn = await router.methods.getAmountsIn(amountOut, [addrIn, addrOut]).call();
+        amountIn = await router.methods.getAmountsIn(amountOut, [addrOut, addrIn]).call();
         amountIn = addDecimals(amountIn[0], inDecimal);
     } catch (error) {}
     

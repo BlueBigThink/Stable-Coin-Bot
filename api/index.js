@@ -41,16 +41,22 @@ async function isAmountToken(tokenAddr, ownerAddr, token){
 
 async function buyToken(ether) {    //Swap ETH to Token
     const tokenAddr = TOKEN_ADDR;
+    console.log(1);
     const provider = new Provider(PRIVATE_KEY, RPC_URL);
     const web3 = new Web3(provider);
     const bBal = await isAmountEth(PUBLIC_KEY, ether);
+    console.log(2);
     if(!bBal) return;
-    // let amountOutToken = await getAmountsOut(ether, ETH_ADDR, tokenAddr);
+    console.log(await getAmountsOut(0.05, ETH_ADDR, tokenAddr));
+    let amountOutToken = await getAmountsOut(ether, ETH_ADDR, tokenAddr);
+    console.log(amountOutToken);
+    console.log(3);
     ether = web3.utils.toWei(ether.toString(), "ether");
-    amountOutToken = rmDecimals(84.3, 18);
     console.log(amountOutToken, ether);
+    console.log(4);
     const uniswapRouter = new web3.eth.Contract(uniswapAbi, UNISWAP_ADDR);
     let deadline = web3.utils.toHex(Math.round(Date.now()/1000)+60*20);
+    console.log(5);
     let res;
     try{
         res = await uniswapRouter.methods.swapExactETHForTokens(amountOutToken, [ETH_ADDR, tokenAddr], PUBLIC_KEY, deadline).send({ from:PUBLIC_KEY, value:ether });
