@@ -34,8 +34,8 @@ async function test() {
     // console.log("getAmountsOut", await getAmountsOut(0.1, ETH_ADDR, TOKEN_ADDR));
     // console.log("getAmountsIn", await getAmountsIn(0.1, ETH_ADDR, TOKEN_ADDR));
 
-    // buyToken(0.05);
-    sellToken(0.1);
+    //await buyToken(0.05);
+    await sellToken(0.1);
 }
 
 async function startBot() {

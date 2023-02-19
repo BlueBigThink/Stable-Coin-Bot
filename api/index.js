@@ -63,18 +63,27 @@ async function buyToken(ether) {    //Swap ETH to Token
 
 async function sellToken(ether) {   //Swap Tokne to ETH
     const tokenAddr = TOKEN_ADDR;
-    let amountInToken = getAmountsIn(ether, tokenAddr, ETH_ADDR);
-    const bBal = isAmountToken(amountInToken);
+    let amountInToken = await getAmountsIn(ether, ETH_ADDR, tokenAddr);
+    // amountInToken = parseFloat(amountInToken) * 1.06;
+    const bBal = await isAmountToken(tokenAddr, PUBLIC_KEY, amountInToken);
     if(!bBal) return;
     const provider = new Provider(PRIVATE_KEY, RPC_URL);
     const web3 = new Web3(provider);
+    const ntokenDecimal = await getDecimals(tokenAddr);
+    amountInToken = rmDecimals(amountInToken, ntokenDecimal);
+    ether = parseFloat(ether) * 0.95;
+    ether = web3.utils.toWei(ether.toString(), "ether");
     const uniswapRouter = new web3.eth.Contract(uniswapAbi, UNISWAP_ADDR);
     let deadline = web3.utils.toHex(Math.round(Date.now()/1000)+60*20);
-    let res = null;
+    console.log(deadline, PUBLIC_KEY);
+    let res;
     try{
-        res = await uniswapRouter.methods.swapExactTokensForETH(amountInToken, ether, [tokenAddr, ETH_ADDR], PUBLIC_KEY, deadline).call();
-    }catch(e){}
-    console.log(res);
+        // res = await uniswapRouter.methods.swapExactTokensForETH(amountInToken, ether, [tokenAddr, ETH_ADDR], PUBLIC_KEY, deadline).send({ from:PUBLIC_KEY });
+        res = await uniswapRouter.methods.swapExactTokensForETHSupportingFeeOnTransferTokens(amountInToken, ether, [tokenAddr, ETH_ADDR], PUBLIC_KEY, deadline).send({ from:PUBLIC_KEY });
+        console.log(res);
+    }catch(e){
+        console.log(e);
+    }
 }
 
 module.exports = {
