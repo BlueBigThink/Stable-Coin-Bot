@@ -1,5 +1,5 @@
 const {BN} = require('web3-utils');
-
+const nSlippage = process.env.SLIPPAGE;
 function rmDecimals( number, decimals ){
     number = number.toString();
     let numberAbs = number.split('.')[0]
@@ -16,6 +16,9 @@ function addDecimals(x, n) { //divide
     return dm.div + "." + dm.mod.toString(10, n)
 }
 
+function considerSlippage(amount) {
+    return (parseFloat(amount) * (1 - nSlippage/100));
+}
 function printCurTime() {
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -31,5 +34,6 @@ function printCurTime() {
 module.exports = {
     rmDecimals,
     addDecimals,
-    printCurTime
+    printCurTime,
+    considerSlippage
 }
