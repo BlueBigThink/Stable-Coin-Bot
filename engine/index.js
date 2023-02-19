@@ -9,12 +9,35 @@ const {
     getDecimals,
     getBalanceOfPool,
     buyToken,
-    sellToken
+    sellToken,
+    getAmountsOut,
+    getAmountsIn,
+    balanceOfEth,
+    balanceOfToken,
+    isAmountEth,
+    isAmountToken,
+    sendEmail
 } = require('../api/index.js');
 
-const { setDecimals, addDecimals } = require('../utils/utils');
+const { rmDecimals, addDecimals, considerSlippage } = require('../utils/utils');
 
 async function test() {
+    // console.log(await getPairAddr(ETH_ADDR, TOKEN_ADDR));
+    // console.log(await getPairAddr(ETH_ADDR, USDT_ADDR));
+    // console.log(await balanceOfToken(TOKEN_ADDR, PUBLIC_KEY));
+    // console.log(await balanceOfEth(PUBLIC_KEY));
+    // console.log(await isAmountToken(TOKEN_ADDR, PUBLIC_KEY, 296764));
+    // console.log(await isAmountEth(PUBLIC_KEY, 2));
+    // console.log(await getDecimals(TOKEN_ADDR));
+    // console.log(await getPriceETH());
+    // console.log("getBalanceOfPool", await getBalanceOfPool(ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsOut", await getAmountsOut(0.1, ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsIn", await getAmountsIn(0.1, ETH_ADDR, TOKEN_ADDR));
+    // console.log(considerSlippage(800));
+
+    // await buyToken(0.05);
+    // await sellToken(0.1);
+    sendEmail('blue.bigtech@gmail.com', 'This is test content.');
 }
 
 async function startBot() {
