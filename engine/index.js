@@ -31,11 +31,11 @@ async function test() {
     // console.log(await getDecimals(TOKEN_ADDR));
     // console.log(await getPriceETH());
     // console.log("getBalanceOfPool", await getBalanceOfPool(ETH_ADDR, TOKEN_ADDR));
-    // console.log("getAmountsOut", await getAmountsOut(0.05, ETH_ADDR, TOKEN_ADDR));
-    console.log("getAmountsIn", await getAmountsIn(0.05, ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsOut", await getAmountsOut(0.1, ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsIn", await getAmountsIn(0.1, ETH_ADDR, TOKEN_ADDR));
 
-    // buyToken(0.1);
-    // sellToken(0.1);
+    // buyToken(0.05);
+    sellToken(0.1);
 }
 
 async function startBot() {
