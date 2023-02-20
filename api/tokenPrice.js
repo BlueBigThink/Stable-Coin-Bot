@@ -1,6 +1,7 @@
 const fs = require('fs')
 const Web3 = require('web3');
 const axios = require('axios');
+const https = require('https');
 
 const web3 = new Web3(RPC_URL);
 const { rmDecimals, addDecimals } = require('../utils/utils');
@@ -43,8 +44,13 @@ async function getPriceETH(){
     return amountOut;
 }
 
+// At request level
+const agent = new https.Agent({
+    rejectUnauthorized: false
+});
+
 async function getTargetPrice(){
-    const target = await axios.get('https://api.un1credapp.com/api/forex/avg');
+    const target = await axios.get('https://api.un1credapp.com/api/forex/avg', { httpsAgent: agent });
     return target.data;
 }
 

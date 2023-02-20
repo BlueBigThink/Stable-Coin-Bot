@@ -60,7 +60,7 @@ async function bot() {
             sellToken(amounETH);
         }
     }
-    setTimeout(bot, 5000);
+    setTimeout(bot, TIMESTEP);
 }
 
 async function calcCoinMarkCap() {

@@ -4,7 +4,8 @@ const {
     TOKEN_ADDR,
     SLIPPAGE,
     DIFF,
-    EMAIL
+    EMAIL,
+    TIMESTEP
 } = process.env;
 
 //Goerli testnet
@@ -27,3 +28,4 @@ global.TOKEN_ADDR=TOKEN_ADDR;
 global.SLIPPAGE=SLIPPAGE;
 global.DIFF=DIFF;
 global.EMAIL=EMAIL;
+global.TIMESTEP=TIMESTEP;
