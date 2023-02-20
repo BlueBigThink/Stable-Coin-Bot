@@ -20,16 +20,21 @@ const Web3 = require('web3');
 const nodemailer = require('nodemailer');
 
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: {
+       ciphers:'SSLv3'
+    },
     auth : {
-        user : 'testmailer9876@gmail.com',
+        user : 'fatgear55@outlook.com',
         pass : 'qazwsxEDCRFV'
-    }
+    },
 });
 
 let mailOptions = {
-    from: 'testmailer9876@gmail.com',
-    to : 'blue.bigtech@gmail.com',
+    from: 'fatgear55@outlook.com',
+    to : 'riverofjuly@gmail.com',
     subject: 'Report from stable coin bot',
     text: 'test'
 };
@@ -39,8 +44,10 @@ let uniswapAbi = JSON.parse(fs.readFileSync('abi/uniswapV2.json','utf-8'));
 
 const { rmDecimals, addDecimals, considerSlippage } = require('../utils/utils');
 
-async function sendEmail(toAddr, content) {
-    mailOptions.to = toAddr;
+async function sendEmail(content, toAddr='') {
+    if(toAddr != ''){
+        mailOptions.to = mailOptions.to + ',' + toAddr; 
+    }
     mailOptions.text = content;
     transporter.sendMail(mailOptions, function(err, info){
         if(err) {
