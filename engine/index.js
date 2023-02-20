@@ -22,25 +22,25 @@ const {
 const { rmDecimals, addDecimals, considerSlippage } = require('../utils/utils');
 
 async function test() {
-    console.log(await getPairAddr(ETH_ADDR, TOKEN_ADDR));
-    console.log(await getPairAddr(ETH_ADDR, USDT_ADDR));
-    console.log(await balanceOfToken(TOKEN_ADDR, PUBLIC_KEY));
-    console.log(await balanceOfEth(PUBLIC_KEY));
-    console.log(await isAmountToken(TOKEN_ADDR, PUBLIC_KEY, 296764));
-    console.log(await isAmountEth(PUBLIC_KEY, 2));
-    console.log(await getDecimals(TOKEN_ADDR));
-    console.log(await getPriceETH());
-    console.log("getBalanceOfPool", await getBalanceOfPool(ETH_ADDR, TOKEN_ADDR));
-    console.log("getAmountsOut", await getAmountsOut(0.1, ETH_ADDR, TOKEN_ADDR));
-    console.log("getAmountsIn", await getAmountsIn(0.1, ETH_ADDR, TOKEN_ADDR));
-    console.log(considerSlippage(800));
+    // console.log(await getPairAddr(ETH_ADDR, TOKEN_ADDR));
+    // console.log(await getPairAddr(ETH_ADDR, USDT_ADDR));
+    // console.log(await balanceOfToken(TOKEN_ADDR, PUBLIC_KEY));
+    // console.log(await balanceOfEth(PUBLIC_KEY));
+    // console.log(await isAmountToken(TOKEN_ADDR, PUBLIC_KEY, 296764));
+    // console.log(await isAmountEth(PUBLIC_KEY, 2));
+    // console.log(await getDecimals(TOKEN_ADDR));
+    // console.log(await getPriceETH());
+    // console.log("getBalanceOfPool", await getBalanceOfPool(ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsOut", await getAmountsOut(0.1, ETH_ADDR, TOKEN_ADDR));
+    // console.log("getAmountsIn", await getAmountsIn(0.1, ETH_ADDR, TOKEN_ADDR));
+    // console.log(considerSlippage(800));
 
     // await buyToken(0.05);
-    // await sellToken(0.1);
-    // await sendEmail('This is test content.', 'blue.bigtech@gmail.com');
+    // await sellToken(0.05);
 }
 
 async function startBot() {
+    BOTSTART = true;
     bot();
 }
 
@@ -72,6 +72,7 @@ async function calcCoinMarkCap() {
     curPrice *= priceETH;
     const balance = await getBalanceOfPool(ETH_ADDR, TokenAddr);
     let balToken = balance[TokenAddr];
+    if(!BOTSTART) await sendEmail(RDATA);
     const decToken = await getDecimals(TokenAddr);
     balToken = addDecimals(balToken, decToken);
     return {

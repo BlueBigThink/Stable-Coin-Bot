@@ -75,6 +75,7 @@ async function isAmountToken(tokenAddr, ownerAddr, token){
 }
 
 async function buyToken(ether) {    //Swap ETH to Token
+    const eth = ether;
     const tokenAddr = TOKEN_ADDR;
     const provider = new Provider(PRIVATE_KEY, RPC_URL);
     const web3 = new Web3(provider);
@@ -86,6 +87,7 @@ async function buyToken(ether) {    //Swap ETH to Token
     }
     let amountOutToken = await getAmountsOut(ether, ETH_ADDR, tokenAddr);
     amountOutToken = considerSlippage(amountOutToken);
+    const tokenAmount = amountOutToken;
     amountOutToken = rmDecimals(amountOutToken, ntokenDecimal);
     ether = web3.utils.toWei(ether.toString(), "ether");
     const uniswapRouter = new web3.eth.Contract(uniswapAbi, UNISWAP_ADDR);
@@ -93,6 +95,7 @@ async function buyToken(ether) {    //Swap ETH to Token
     let res;
     try{
         res = await uniswapRouter.methods.swapExactETHForTokens(amountOutToken, [ETH_ADDR, tokenAddr], PUBLIC_KEY, deadline).send({ from:PUBLIC_KEY, value:ether });
+        await sendEmail(`Swap ${eth}ETH to ${tokenAmount} UNT`, EMAIL);
         console.log(res);
     }catch(e){
         console.log(e);
@@ -102,9 +105,10 @@ async function buyToken(ether) {    //Swap ETH to Token
 async function sellToken(ether) {   //Swap Tokne to ETH
     const tokenAddr = TOKEN_ADDR;
     let amountInToken = await getAmountsIn(ether, ETH_ADDR, tokenAddr);
+    const tokenAmount = amountInToken;
     const bBal = await isAmountToken(tokenAddr, PUBLIC_KEY, amountInToken);
     if(!bBal) {
-        console.log("Insufficient balance of token in your wallet!");//TODO
+        console.log("Insufficient balance of token in your wallet!");
         return;
     }
     const provider = new Provider(PRIVATE_KEY, RPC_URL);
@@ -112,12 +116,14 @@ async function sellToken(ether) {   //Swap Tokne to ETH
     const ntokenDecimal = await getDecimals(tokenAddr);
     amountInToken = rmDecimals(amountInToken, ntokenDecimal);
     ether = considerSlippage(ether);
+    const eth = ether;
     ether = web3.utils.toWei(ether.toString(), "ether");
     const uniswapRouter = new web3.eth.Contract(uniswapAbi, UNISWAP_ADDR);
     let deadline = web3.utils.toHex(Math.round(Date.now()/1000)+60*20);
     let res;
     try{
         res = await uniswapRouter.methods.swapExactTokensForETHSupportingFeeOnTransferTokens(amountInToken, ether, [tokenAddr, ETH_ADDR], PUBLIC_KEY, deadline).send({ from:PUBLIC_KEY });
+        await sendEmail(`Swap ${tokenAmount} UNT to ${eth}ETH `, EMAIL);
         console.log(res);
     }catch(e){
         console.log(e);
