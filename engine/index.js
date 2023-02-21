@@ -40,8 +40,8 @@ async function test() {
 }
 
 async function startBot() {
-    BOTSTART = true;
     bot();
+    BOTSTART = true;
 }
 
 async function bot() {
