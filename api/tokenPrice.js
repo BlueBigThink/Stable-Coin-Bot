@@ -1,9 +1,10 @@
 const fs = require('fs')
 const Web3 = require('web3');
 const axios = require('axios');
+const https = require('https');
 
 const web3 = new Web3(RPC_URL);
-const { setDecimals, addDecimals } = require('../utils/utils');
+const { rmDecimals, addDecimals } = require('../utils/utils');
 
 let uniswapABI = JSON.parse(fs.readFileSync('abi/uniswapV2.json','utf-8'));
 let tokenAbi = JSON.parse(fs.readFileSync('abi/erc20.json','utf-8'));
@@ -16,7 +17,7 @@ async function getPriceByETH( tokenAmountToSell, tokenAddr){
     let tokenRouter = await new web3.eth.Contract( tokenAbi, tokenAddr );
     let tokenDecimals = await tokenRouter.methods.decimals().call();
     
-    tokenAmountToSell = setDecimals(tokenAmountToSell, tokenDecimals);
+    tokenAmountToSell = rmDecimals(tokenAmountToSell, tokenDecimals);
     let amountOut;
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
@@ -33,9 +34,9 @@ async function getPriceETH(){
     try {
         let router = await new web3.eth.Contract( uniswapABI, UNISWAP_ADDR );
         amountOut = await router.methods.getAmountsOut(ethToSell, [ETH_ADDR ,USDT_ADDR]).call();
-        // const dec = await getDecimals(USDT_ADDR);
+        const dec = await getDecimals(USDT_ADDR);
         amountOut =  amountOut[1];
-        amountOut = addDecimals(amountOut, 6);
+        amountOut = addDecimals(amountOut, dec);
     } catch (error) {}
 
 
@@ -43,17 +44,14 @@ async function getPriceETH(){
     return amountOut;
 }
 
+// At request level
+const agent = new https.Agent({
+    rejectUnauthorized: false
+});
+
 async function getTargetPrice(){
-    const target = await axios.get('https://api.un1credapp.com/api/forex/avg');
+    const target = await axios.get('https://api.un1credapp.com/api/forex/avg', { httpsAgent: agent });
     return target.data;
-}
-
-async function buyToken(ether) {
-
-}
-
-async function sellToken(ether) {
-
 }
 
 module.exports = {
@@ -61,6 +59,4 @@ module.exports = {
     getDecimals,
     getPriceByETH,
     getTargetPrice,
-    buyToken,
-    sellToken
 }
